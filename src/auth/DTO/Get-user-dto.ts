@@ -10,11 +10,12 @@ export class GetUserDto {
   @IsString()
   identifier: string;
 
-  @IsStrongPassword({
-    minLength: 8,
-    minLowercase: 1,
-    minUppercase: 1,
-    minNumbers: 1
-  })
+  // @IsStrongPassword({
+  //   minLength: 8,
+  //   minLowercase: 1,
+  //   minUppercase: 1,
+  //   minNumbers: 1
+  // })
+  @IsString()
   password: string;
 }
