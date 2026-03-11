@@ -11,13 +11,24 @@ export class AuthService {
         private usersRepository: Repository<User>,
       ) {}
 
-    async signIn(getUserDto: GetUserDto) {
-        const user = await this.usersRepository.findOne({ where: { email: getUserDto.email, password: getUserDto.password, phone: getUserDto.phone } });
+      async signIn(getUserDto: GetUserDto) {
+        const user = await this.usersRepository.findOne({
+          where: [
+            { email: getUserDto.identifier },
+            { phone: getUserDto.identifier }
+          ]
+        });
+
         if (!user) {
           throw new Error('Invalid credentials');
         }
-        return {message: "sucess", user: user}
-    }
+
+        if (user.password !== getUserDto.password) {
+          throw new Error('Invalid credentials');
+        }
+
+        return { message: "success", user };
+      }
 
     async signUp(getUserDto: createUserDto) {
         const existingUser = await this.usersRepository.findOne({ where: { email: getUserDto.email } });

@@ -1,4 +1,4 @@
-import { IsEmail, IsIdentityCard, IsNotEmpty, IsPhoneNumber, IsString, IsStrongPassword, ValidateIf } from 'class-validator';
+import { IsEmail, IsIdentityCard, isNotEmpty, IsNotEmpty, IsNumber, IsPhoneNumber, IsString, IsStrongPassword, ValidateIf } from 'class-validator';
 
 export class GetUserDto {
 
@@ -6,13 +6,9 @@ export class GetUserDto {
     @IsNotEmpty()
     id: string
 
-  @ValidateIf((o) => !o.phone)
-  @IsEmail()
-  email?: string;
-
-  @ValidateIf((o) => !o.email)
-  @IsPhoneNumber('NG')
-  phone?: string;
+  @IsNotEmpty()
+  @IsString()
+  identifier: string;
 
   @IsStrongPassword({
     minLength: 8,
