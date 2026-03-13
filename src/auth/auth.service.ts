@@ -6,13 +6,18 @@ import { createUserDto } from './DTO/create-user-dto';
 import { hashPassword, comparePassword } from 'src/helpers/hasing.helper';
 import { loginDto } from './DTO/login-user-dto';
 import { JwtService } from '@nestjs/jwt';
+import type { ConfigType } from '@nestjs/config';
+import  jwtConfig from './config/jwt.config';
+import { Inject } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
       constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @Inject(jwtConfig.KEY)
+        private readonly jwtConfiguraton: ConfigType<typeof jwtConfig>
       ) {}
 
       async validateUser(logindto: loginDto) {
@@ -38,6 +43,8 @@ export class AuthService {
 
     login(user: User) {
       const payload = { sub: user.user_id };
+      console.log("JWT EXPIRES:", this.jwtConfiguraton.signOptions?.expiresIn);
+  console.log("JWT SECRET:", this.jwtConfiguraton.secret);
       return this.jwtService.sign(payload);
     }
 
