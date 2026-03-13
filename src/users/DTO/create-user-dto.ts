@@ -8,6 +8,10 @@ export enum roles {
 export class createUserDto {
     @IsString()
     @IsNotEmpty()
+    user_id: string
+
+    @IsString()
+    @IsNotEmpty()
     @IsDefined()
     firstName: string
 

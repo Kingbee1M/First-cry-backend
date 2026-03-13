@@ -22,7 +22,10 @@ export class createUserDto {
     @IsPhoneNumber('NG')
     phone: string
 
-    @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, })
+    // @IsStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, })
+    @IsDefined()
+    @IsNotEmpty()
+    @IsString()
     password: string
 
     @IsString()

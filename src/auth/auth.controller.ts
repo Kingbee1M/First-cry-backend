@@ -1,15 +1,26 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { GetUserDto } from './DTO/Get-user-dto';
+import { Controller, Post, Body, UseGuards, Request, HttpCode, HttpStatus } from '@nestjs/common';
+import { loginDto } from './DTO/login-user-dto';
 import { AuthService } from './auth.service';
 import { createUserDto } from './DTO/create-user-dto';
+import { AuthGuard } from '@nestjs/passport';
+import { ValidationPipe } from '@nestjs/common';
+
 
 @Controller('auth')
 export class AuthController {
   constructor (private readonly authService: AuthService) {}
 
-  @Post() 
-  LoginUser(@Body() getUserDto: GetUserDto){
-    return this.authService.signIn(getUserDto)
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(AuthGuard('local'))
+  @Post()
+  loginUser(@Request() req) {
+    const token = this.authService.login(req.user);
+    return { message: 'success', 
+      user_id: req.user.user_id, 
+      firstName: req.user.firstName, 
+      lastName: req.user.lastName, 
+      email: req.user.email, 
+      access_token: token};
   }
 
   @Post('signup')

@@ -26,13 +26,13 @@ export class User {
   @Column()
   password: string
 
-  @Column()
+  @Column({nullable: true})
   age: number;
 
   @Column({ unique: true, nullable: true})
   phone: string
 
-  @Column()
+  @Column({default: 'user'})
   role: string;
 
   @Column({default: false})
