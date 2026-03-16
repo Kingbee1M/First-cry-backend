@@ -1,9 +1,5 @@
 import { IsDefined, IsEmail, IsNumber, IsPhoneNumber, IsString, IsStrongPassword, IsNotEmpty } from "class-validator"
-export enum roles {
-    User = 'user',
-    Seller = 'seller',
-    Admin = 'admin'
-}
+import { UserRole } from "src/auth/enums/role.enums"
 
 export class createUserDto {
     @IsString()
@@ -30,7 +26,7 @@ export class createUserDto {
     password: string
 
     @IsString()
-    role: roles
+    role: UserRole
 
     @IsNumber()
     age: number

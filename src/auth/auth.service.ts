@@ -8,6 +8,8 @@ import { loginDto } from './DTO/login-user-dto';
 import { JwtService } from '@nestjs/jwt';
 import refreshJwtConfig from './config/refresh.jwt.config';
 import type { ConfigType } from '@nestjs/config';
+import { getUserDto } from './DTO/Get-user-dto';
+
 
 @Injectable()
 export class AuthService {
@@ -61,5 +63,14 @@ export class AuthService {
         const payload = { sub: user.user_id };
         const token = this.jwtService.sign(payload);
         return { token }
+      }
+
+      async validatejwtUser(userDto: getUserDto['user_id']) {
+        const user = await this.usersRepository.findOne({where : {user_id: userDto}});
+        if (!user) {
+          throw new UnauthorizedException();
+        }
+        const currentUser: getUserDto = {user_id: user.user_id, role: user.role }
+        return currentUser
       }
 }

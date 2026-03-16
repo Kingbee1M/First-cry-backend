@@ -6,6 +6,8 @@ import {
   UpdateDateColumn 
 } from 'typeorm';
 
+import { UserRole } from 'src/auth/enums/role.enums';
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -32,8 +34,8 @@ export class User {
   @Column({ unique: true, nullable: true})
   phone: string
 
-  @Column({default: 'user'})
-  role: string;
+  @Column({type: 'enum', enum: UserRole ,default: UserRole.Admin})
+  role: UserRole;
 
   @Column({default: false})
   logInStatus: boolean

@@ -1,21 +1,28 @@
-import { IsEmail, IsIdentityCard, isNotEmpty, IsNotEmpty, IsNumber, IsPhoneNumber, IsString, IsStrongPassword, ValidateIf } from 'class-validator';
+import { IsDefined, IsEmail, IsNumber, IsPhoneNumber, IsString, IsStrongPassword, IsNotEmpty } from "class-validator"
+import { UserRole } from "../enums/role.enums"
 
-export class GetUserDto {
+export class getUserDto {
 
     @IsString()
     @IsNotEmpty()
-    id: string
+    @IsDefined()
+    user_id: string
 
-  @IsNotEmpty()
-  @IsString()
-  identifier: string;
+    @IsString()
+    @IsNotEmpty()
+    @IsDefined()
+    firstName?: string
 
-  // @IsStrongPassword({
-  //   minLength: 8,
-  //   minLowercase: 1,
-  //   minUppercase: 1,
-  //   minNumbers: 1
-  // })
-  @IsString()
-  password: string;
+    @IsString()
+    @IsNotEmpty()
+    @IsDefined()
+    lastName?: string
+
+    @IsEmail()
+    email?: string
+
+    @IsString()
+    role?: UserRole
+
+
 }
