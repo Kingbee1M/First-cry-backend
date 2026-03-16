@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { createUserDto } from './DTO/create-user-dto';
 import { AuthGuard } from '@nestjs/passport';
 import { ValidationPipe } from '@nestjs/common';
+import { RefreshJwtGuard } from './guards/refresh-jwt/refresh-jwt.guard';
 
 
 @Controller('auth')
@@ -14,17 +15,24 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post()
   loginUser(@Request() req) {
-    const token = this.authService.login(req.user);
+    const data = this.authService.login(req.user);
     return { message: 'success', 
       user_id: req.user.user_id, 
       firstName: req.user.firstName, 
       lastName: req.user.lastName, 
       email: req.user.email, 
-      access_token: token};
+      token_data: data};
   }
 
   @Post('signup')
   createUser(@Body() createUserDto: createUserDto){
     return this.authService.signUp(createUserDto)
   }
+
+  @UseGuards(RefreshJwtGuard)
+  @Post('refresh')
+  refreshToken(@Request() req) {
+    return this.authService.refreshToken(req.user);
+  }  
+
 }
